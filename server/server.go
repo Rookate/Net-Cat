@@ -19,16 +19,18 @@ func (s *Server) HandleMessage() {
 		for _, client := range s.Clients {
 			var formattedMessage string
 			var nameWithColor string
+			var err error
 			if client.ID == message.sender.ID {
 				// Message envoyé par le client lui-même
 				nameWithColor = Colorize("You", message.sender.color)
 				formattedMessage = fmt.Sprintf("[%s][%s]: %s", message.timestamp.Format(time.RFC1123), nameWithColor, message.content)
+				_, err = client.conn.Write([]byte("\033[A\033[2K\r" + formattedMessage + "\n"))
 			} else {
 				// Message envoyé par un autre client
 				nameWithColor = Colorize(message.sender.name, message.sender.color)
 				formattedMessage = fmt.Sprintf("[%s][%s]: %s", message.timestamp.Format(time.RFC1123), nameWithColor, message.content)
+				_, err = client.conn.Write([]byte(formattedMessage + "\n"))
 			}
-			_, err := client.conn.Write([]byte(formattedMessage + "\n"))
 			if err != nil {
 				fmt.Println("Error sending message:", err)
 			}
