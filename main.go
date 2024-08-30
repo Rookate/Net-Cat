@@ -8,13 +8,17 @@ import (
 )
 
 func main() {
-	ip := flag.String("ip", "127.0.0.1", "Ip adress to bind to")
+	ip := flag.String("ip", "172.20.10.3", "Ip adress to bind to")
 	port := flag.String("port", "8989", "Port to listen on")
 	flag.Parse()
 
 	logFile := nc.GenerateLogFileName()
 
 	err := nc.OpenLogFile(logFile)
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	defer nc.CloseLogFile()
 
@@ -44,9 +48,3 @@ func main() {
 		go server.HandleClient(conn)
 	}
 }
-
-/*
-	- Fonction pour gérer les connections et les déconnections des clients
-	- Fonction pour gérer un seul client pour quand il envoie un message ou quand il recoit un message -> Goroutine pour chaque client
-	- Fonction pour gérer les messages pour pouvoir les montrer à chaque clients. -> Utilisations des channels ainsi que mu pour synchroniser l'accès aux channels
-*/
