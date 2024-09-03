@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	ip := flag.String("ip", "172.20.10.3", "Ip adress to bind to")
+	ip := flag.String("ip", "127.0.0.1", "Ip adress to bind to")
 	port := flag.String("port", "8989", "Port to listen on")
 	flag.Parse()
 
