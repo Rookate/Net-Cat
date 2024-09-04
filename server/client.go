@@ -79,7 +79,7 @@ func (s *Server) sendHistoryToClient(client Client) {
 
 	for _, msg := range s.History {
 		formattedMessage := formatMessageForClient(msg, client)
-		_, err := client.conn.Write([]byte("\033[A\033[2K\r" + formattedMessage + "\n"))
+		_, err := client.conn.Write([]byte(formattedMessage + "\n"))
 		if err != nil {
 			fmt.Println("Error sending message to new client:", err)
 		}
